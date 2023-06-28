@@ -1,0 +1,177 @@
+#+TITLE: Started Template - Near Smartcontract
+#+AUTHOR: Dang Quang Vu
+#+EMAIL: eamondang@gmail.com
+#+SETUPFILE: ~/theme-readtheorg.setup
+#+HTML_HEAD: <style>pre.src{background:#343131;color:white;} </style>
+
++ Quickly build apps backed by the NEAR blockchain
++ Prerequisites
+
+#+begin_quote
+Make sure you have a current version of Node.js & Rust installed => We recommend versions 18+ & rust 1.69
+#+end_quote
+
+* Getting Started
+** Clone the repository
+#+begin_src sh :results output
+git clone https://github.com/eamondang/started-near-app.git && cd started-near-app
+#+end_src
+
+** Requirements Install
++ Cargo Make
+#+begin_src sh :results output
+cargo install cargo-make
+#+end_src
+
++ Install near Cli
+#+begin_src sh :results output
+npm install -g near-cli
+#+end_src
+
+* Step by Step
++ Prepare
+#+begin_src sh :results output
+cargo make prepare
+#+end_src
+
++ Build Contract
+#+begin_src sh :results output
+cargo make build
+#+end_src
+
++ deploy Contract
+#+begin_src sh :results output
+cargo make dev-deploy
+#+end_src
+
+* Run ClI
+** init
+#+begin_src sh :results output
+cargo make call-self new
+#+end_src
+
+#+RESULTS:
+#+begin_example
+[cargo-make] INFO - cargo make 0.36.11
+[cargo-make] INFO - Calling cargo metadata to extract project info
+[cargo-make] INFO - Cargo metadata done
+[cargo-make] INFO - Project: contract
+[cargo-make] INFO - Build File: Makefile.toml
+[cargo-make] INFO - Task: call-self
+[cargo-make] INFO - Profile: development
+[cargo-make] INFO - Running Task: legacy-migration
+[cargo-make] INFO - Running Task: call-self
+[cargo-make] INFO - Execute Command: "/usr/bin/env" "zsh" "/var/folders/vp/83kwd_3n3dx6mrj_d3n54wsm0000gn/T/fsio_gaDAo8uoJi.sh" "new"
+Scheduling a call: dev-1687943087933-32108745300175.new()
+Doing account.functionCall()
+Transaction Id FMWex5kyM4nAghFyFCpzPTQYPb2KPZ8mdixqvEKXhm4D
+To see the transaction in the transaction explorer, please open this url in your browser
+https://explorer.testnet.near.org/transactions/FMWex5kyM4nAghFyFCpzPTQYPb2KPZ8mdixqvEKXhm4D
+''
+[cargo-make] INFO - Build Done in 11.89 seconds.
+#+end_example
+
+** view product
+#+begin_src sh :results output
+cargo make view get_product '{"id": 0}'
+#+end_src
+
+#+RESULTS:
+#+begin_example
+[cargo-make] INFO - cargo make 0.36.11
+[cargo-make] INFO - Calling cargo metadata to extract project info
+[cargo-make] INFO - Cargo metadata done
+[cargo-make] INFO - Project: contract
+[cargo-make] INFO - Build File: Makefile.toml
+[cargo-make] INFO - Task: view
+[cargo-make] INFO - Profile: development
+[cargo-make] INFO - Running Task: legacy-migration
+[cargo-make] INFO - Running Task: view
+[cargo-make] INFO - Execute Command: "/usr/bin/env" "zsh" "/var/folders/vp/83kwd_3n3dx6mrj_d3n54wsm0000gn/T/fsio_pORxD1YVxE.sh" "get_product" "{\"id\": 0}"
+View call: dev-1687943087933-32108745300175.get_product({"id": 0})
+{
+  id: 0,
+  owner: 'eamon.testnet',
+  name: 'Eamon',
+  price: 1,
+  description: 'Day la mo ta ne',
+  image: 'https://hello.com'
+}
+[cargo-make] INFO - Build Done in 11.98 seconds.
+#+end_example
+
+** view all product
+#+begin_src sh :results output
+cargo make view get_products
+#+end_src
+
+#+RESULTS:
+#+begin_example
+[cargo-make] INFO - cargo make 0.36.11
+[cargo-make] INFO - Calling cargo metadata to extract project info
+[cargo-make] INFO - Cargo metadata done
+[cargo-make] INFO - Project: contract
+[cargo-make] INFO - Build File: Makefile.toml
+[cargo-make] INFO - Task: view
+[cargo-make] INFO - Profile: development
+[cargo-make] INFO - Running Task: legacy-migration
+[cargo-make] INFO - Running Task: view
+[cargo-make] INFO - Execute Command: "/usr/bin/env" "zsh" "/var/folders/vp/83kwd_3n3dx6mrj_d3n54wsm0000gn/T/fsio_zONbXZKOFj.sh" "get_products"
+View call: dev-1687943087933-32108745300175.get_products()
+[
+  [
+    0,
+    {
+      id: 0,
+      owner: 'eamon.testnet',
+      name: 'Eamon',
+      price: 1,
+      description: 'Day la mo ta ne',
+      image: 'https://hello.com'
+    }
+  ],
+  [
+    1,
+    {
+      id: 1,
+      owner: 'eamon.testnet',
+      name: 'Eamon1',
+      price: 1,
+      description: 'Day la mo ta ne',
+      image: 'https://hello.com'
+    }
+  ]
+]
+[cargo-make] INFO - Build Done in 11.76 seconds.
+#+end_example
+
+** add product
+#+begin_src sh :results output
+cargo make call add_product '{"name": "Eamon1", "price": 1, "description": "Day la mo ta ne", "image": "https://hello.com"}' --account-id eamon.testnet
+#+end_src
+
+#+RESULTS:
+#+begin_example
+[cargo-make] INFO - cargo make 0.36.11
+[cargo-make] INFO - Calling cargo metadata to extract project info
+[cargo-make] INFO - Cargo metadata done
+[cargo-make] INFO - Project: contract
+[cargo-make] INFO - Build File: Makefile.toml
+[cargo-make] INFO - Task: call
+[cargo-make] INFO - Profile: development
+[cargo-make] INFO - Running Task: legacy-migration
+[cargo-make] INFO - Running Task: call
+[cargo-make] INFO - Execute Command: "/usr/bin/env" "zsh" "/var/folders/vp/83kwd_3n3dx6mrj_d3n54wsm0000gn/T/fsio_R57pyVMYqu.sh" "add_product" "{\"name\": \"Eamon1\", \"price\": 1, \"description\": \"Day la mo ta ne\", \"image\": \"https://hello.com\"}" "--account-id" "eamon.testnet"
+Scheduling a call: dev-1687943087933-32108745300175.add_product({"name": "Eamon1", "price": 1, "description": "Day la mo ta ne", "image": "https://hello.com"})
+Doing account.functionCall()
+Transaction Id 4hndFnTvJouYd7ApZxj25XMx6iRt5MLqEkZsbTS2awRj
+To see the transaction in the transaction explorer, please open this url in your browser
+https://explorer.testnet.near.org/transactions/4hndFnTvJouYd7ApZxj25XMx6iRt5MLqEkZsbTS2awRj
+''
+[cargo-make] INFO - Build Done in 11.86 seconds.
+#+end_example
+
+** Delete product
+#+begin_src sh :results output
+cargo make call get_products
+#+end_src

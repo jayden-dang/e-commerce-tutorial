@@ -1,0 +1,19 @@
+[package]
+authors = ["Dang Quang Vu <eamondang@gmail.com>"]
+edition = "2021"
+name = "contract"
+version = "0.1.0"
+
+[lib]
+crate-type = ["cdylib"]
+
+[profile.release]
+codegen-units = 1
+debug = false
+lto = true
+opt-level = "z"
+overflow-checks = true
+panic = "abort"
+
+[dependencies]
+near-sdk = "4.1.1"
