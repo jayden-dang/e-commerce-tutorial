@@ -66,6 +66,9 @@ impl Contract {
   }
 
   pub fn update_product(&mut self, id: u32, name: String, price: u128, description: String, image: String) {
+    // check owner
+    let owner = self.get_product(id).owner;
+    assert_eq!(owner, env::signer_account_id(), "You are not the owner of this product");
     let product = Product { id, owner: env::signer_account_id(), name, price, description, image };
 
     self.products.insert(&id, &product);
@@ -89,15 +92,5 @@ impl Contract {
     }
 
     products
-  }
-
-  pub fn payment_product(&mut self, id: u32) {
-    let price = self.products.get(&id).unwrap().price;
-    assert!(env::account_balance() >= price, "Not enough balance to buy this product");
-    assert!(price == env::attached_deposit(), "Attached deposit is not equal to the price of the product");
-
-    let mut product = self.get_product(id);
-    product.owner = env::signer_account_id();
-    self.products.insert(&id, &product);
   }
 }
