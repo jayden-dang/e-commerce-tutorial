@@ -17,3 +17,4 @@ panic = "abort"
 
 [dependencies]
 near-sdk = "4.1.1"
+serde_json = "1.0.100"
