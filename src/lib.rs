@@ -163,14 +163,35 @@ impl Contract {
   /// exercise homework
   ///
   pub fn update_price(&mut self, new_price: Balance, product_id: ProductId) {
-    let mut product = self.get_product_by_id(product_id);
+    let mut product = self.get_product_by_id(product_id.clone());
     product.price = new_price;
+
+    //update product_by_id
+    self.product_by_id.insert(&product_id, &product);
+
+    for i in 1..self.products.len() + 1 {
+      if let Some(product_needed) = self.products.get(&(i as u128)) {
+        //find value in products
+        if product_needed.product_id == product_id {
+          //update value product by i
+          self.products.insert(&(i as u128),&product);
+          //get value in products_set by product.owner
+          let mut products_set: Vec<Product> = self.products_per_shop.get(&product.owner).unwrap();
+          //update value in products_set by i - index
+          products_set[i.clone() as usize - 1] = product.clone();
+          //update product_per_shop by products_set
+          self.products_per_shop.insert(&product.owner,&products_set);
+          break;
+        }
+      }
+    }
   }
 
   #[payable]
   pub fn payment(&mut self, product_id: ProductId) -> Promise {
     let mut product = self.get_product_by_id(product_id);
-    let price = product.price;
+    // 1 Near = 10^24 = 1 (amount)
+    let price = product.price * u128::pow(10, 24);
 
     assert_eq!(price, env::attached_deposit(), "Not Correct price");
 
